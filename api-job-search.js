@@ -9,35 +9,38 @@ app.use(bodyParser.json());
 //outra forma de declaração
 //async function vagas(){...}
 const encontrarVagas = async (find) => {
-    let url = 'https://www.vagas.com.br/vagas-de';
+    try{
+        let url = 'https://www.vagas.com.br/vagas-de';
 
-    const search = find.split(" ");
+        const search = find.split(" ");
 
-    search.map(palavra => {
-        url = url + "-" + palavra;
-    })
+        search.map(palavra => {
+            url = url + "-" + palavra;
+        })
 
-    url = url + "?";
+        url = url + "?";
 
-    //faz requisição do url e o carrega para análise
-    const response = await request(url);
-    const $ = await cheerio.load(response);
-    //percorre cada uma das vagas e aloca o nome de cada uma no array vagasDisponiveis
-    let vagasDisponiveis = [];
-    $('.vaga a').each( function () {
-        vagasDisponiveis.push($(this).attr('title'));
-    })
+        //faz requisição do url e o carrega para análise
+        const response = await request(url);
+        const $ = await cheerio.load(response);
+        //percorre cada uma das vagas e aloca o nome de cada uma no array vagasDisponiveis
+        let vagasDisponiveis = [];
+        $('.vaga a').each( function () {
+            vagasDisponiveis.push($(this).attr('title'));
+        })
 
-    console.log(vagasDisponiveis);
+        return vagasDisponiveis;
+    } catch {
+        return "Erro na Requisição";
+    }
 }
 
 app.get('/', function(req, res) {
     const { find } = req.body;
 
-    encontrarVagas(find);
-
-    res.send("Vagas Encontradas no NodeJs server!")
-
+    //chama função que encontra vagas e retorna resposta da requisição
+    encontrarVagas(find)
+        .then(value => res.send(value))
 })
 
 app.listen(3000);
