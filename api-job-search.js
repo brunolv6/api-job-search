@@ -2,9 +2,11 @@ const request = require('request-promise');
 const cheerio = require('cheerio');
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 const app = express();
 app.use(bodyParser.json());
+app.use(cors());
 
 //outra forma de declaração
 //async function vagas(){...}
@@ -35,7 +37,7 @@ const encontrarVagas = async (find) => {
     }
 }
 
-app.get('/', function(req, res) {
+app.post('/', function(req, res) {
     const { find } = req.body;
 
     //chama função que encontra vagas e retorna resposta da requisição
