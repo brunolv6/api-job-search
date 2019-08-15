@@ -27,8 +27,14 @@ const encontrarVagas = async (find) => {
         const $ = await cheerio.load(response);
         //percorre cada uma das vagas e aloca o nome de cada uma no array vagasDisponiveis
         let vagasDisponiveis = [];
+        let idx = 0;
         $('.vaga a').each( function () {
-            vagasDisponiveis.push($(this).attr('title'));
+            vagasDisponiveis.push({
+                id: idx,
+                vaga: $(this).attr('title'),
+                url: 'https://www.vagas.com.br' + $(this).attr('href')  
+            });
+            idx++;
         })
 
         return vagasDisponiveis;
