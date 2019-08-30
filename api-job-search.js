@@ -43,6 +43,10 @@ const encontrarVagas = async (find) => {
     }
 }
 
+app.get('/', function(req, res) {
+    console.log('The api is working');
+})
+
 app.post('/', function(req, res) {
     const { find } = req.body;
 
